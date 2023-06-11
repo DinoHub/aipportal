@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <img src="image.png" alt="Your Image" usemap="#hotspots">
+    <map name="hotspots">
+      <area shape="rect" coords="500,69,629,140" href="https://example1.com" popimg="clearml.png" alt="Hotspot 1">
+      <area shape="circle" coords="x,y,radius" href="https://example2.com" alt="Hotspot 2">
+      <!-- Add more area tags for additional hotspots -->
+    </map>
+    <div id="imagetip" class="hidden">
+      <a id="imagetip-link" href="#"></a>
+      <div id="imagetip-content">
+        <!-- Content of your imagetip -->
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

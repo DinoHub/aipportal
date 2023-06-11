@@ -1,0 +1,28 @@
+.container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  #imagetip {
+    position: absolute;
+    display: none;
+    pointer-events: none;
+  }
+  
+  #imagetip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  #imagetip-content {
+    /* Styles for the content of your imagetip */
+  }
+  
+  .hidden {
+    visibility: hidden;
+  }
+  
