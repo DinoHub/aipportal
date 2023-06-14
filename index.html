@@ -1,23 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>Image with Clickable Hotspots</title>
+  <style>
+    #image-container {
+      position: relative;
+      max-width: 100%;
+    }
+    #image-container img {
+      max-width: 100%;
+      height: auto;
+    }
+    #hotspot-map {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      outline: 2px solid red;
+      /* pointer-events: none; */
+    }
+
+    #hotspot-map area {
+      outline: 2px solid red;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body>
-  <div class="container">
-    <img src="image.png" alt="Your Image" usemap="#hotspots">
-    <map name="hotspots">
-      <area shape="rect" coords="500,69,629,140" href="https://example1.com" popimg="clearml.png" alt="Hotspot 1">
-      <area shape="circle" coords="x,y,radius" href="https://example2.com" alt="Hotspot 2">
-      <!-- Add more area tags for additional hotspots -->
+<body>`
+  <div id="image-container">
+    <img src="TransparentDayInLifeOfAI.png" alt="Your Image" id="image" usemap="#hotspot-map">
+    <map name="hotspot-map">
+      <area shape="rect" coords="4358,1808,5660,2252" target="_blank" href="www.google.com" onmouseover="handleHotspotClick(1)">
+      <!-- <area shape="circle" coords="300,200,30" onclick="handleHotspotClick(2)"> -->
+      <!-- Add more areas as needed -->
     </map>
-    <div id="imagetip" class="hidden">
-      <a id="imagetip-link" href="#"></a>
-      <div id="imagetip-content">
-        <!-- Content of your imagetip -->
-      </div>
-    </div>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    let imageWidth;
+    let imageHeight;    
+    loaded=0
+    
+    window.addEventListener('load',handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
+
+    function handleWindowResize() {    
+      const image = document.getElementById('image');  
+      if (image.complete) {                
+        positionHotspots();
+        redrawHotspots();
+      } else {
+        image.addEventListener('load', function(){positionHotspots();redrawHotspots();});
+      }      
+    }
+
+    function positionHotspots() {
+      
+      const imageContainer = document.getElementById('image-container');
+      imageWidth = imageContainer.offsetWidth;
+      imageHeight = imageContainer.offsetHeight;
+        
+    }
+
+    function redrawHotspots() {
+      const hotspots = document.querySelectorAll('map[name="hotspot-map"] area');
+      
+      console.debug("image",image)
+
+      hotspots.forEach((hotspot) => {
+        
+        if (loaded==0)
+        { coords= hotspot.getAttribute('coords').split(',');}                
+        loaded=1
+        console.log("coords", parseFloat(coords[0]),parseFloat(coords[1]),parseFloat(coords[2]),parseFloat(coords[3]));
+        console.log("image.naturalWidth", image.naturalWidth)        
+        console.log("image.naturalHeight", image.naturalHeight)       
+        console.log("imageWidth", imageWidth)        
+        console.log("imageHeight", imageHeight)      
+           
+        const left = (parseFloat(coords[0]) / image.naturalWidth) * imageWidth;
+        const top = (parseFloat(coords[1]) / image.naturalHeight) * imageHeight;
+        const width = (parseFloat(coords[2]) / image.naturalWidth) * imageWidth;
+        const height = (parseFloat(coords[3]) / image.naturalHeight) * imageHeight;
+        console.log(left,top, width, height)
+        hotspot.setAttribute('coords', `${left},${top},${width},${height}`);
+      });
+    }
+
+    function handleHotspotClick(hotspotId) {
+      console.log('Hotspot clicked:', hotspotId);
+      // Perform additional actions based on the hotspotId
+    }
+
+    // Initial positioning of hotspots
+    // positionHotspots();
+    // redrawHotspots();
+  </script>
 </body>
 </html>
